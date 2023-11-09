@@ -31,19 +31,101 @@ The RBF of hidden neuron as gaussian function
 
 
 ## ALGORIHM:
+1. Initialize the input patterns for XOR Gate
 
-/** Write the Algorithm in steps**/
+2. Initialize the desired output of the XOR Gate
+
+3. Define the function for RBF and function for prediction.
+
+4. Plot the graphs with inputs
+
+5. Find the weights
+
+6. Plot the graph with transformed inputs using RBF
+
+7. Test for the XOR patterns.
 
 ## PROGRAM:
+```python
+Developed By: Y SHAVEDHA
+Register No. 212221230095
+import numpy as np
+import matplotlib.pyplot as plt
+def gaussian_rbf(x, landmark, gamma=1):
+    return np.exp(-gamma * np.linalg.norm(x - landmark)**2)
+def predict_matrix(point, weights):
+    gaussian_rbf_0 = gaussian_rbf(np.array(point), mu1)
+    gaussian_rbf_1 = gaussian_rbf(np.array(point), mu2)
+    A = np.array([gaussian_rbf_0, gaussian_rbf_1, 1])
+    return np.round(A.dot(weights))
+x1 = np.array([0, 0, 1, 1])
+x2 = np.array([0, 1, 0, 1])
+ys = np.array([0, 1, 1, 0])
 
+plt.figure(figsize=(13, 5))
+plt.subplot(1, 2, 1)
+plt.scatter((x1[0], x1[3]), (x2[0], x2[3]), label="Class_0")
+plt.scatter((x1[1], x1[2]), (x2[1], x2[2]), label="Class_1")
+plt.xlabel("X1")
+plt.ylabel("X2")
+plt.title("Linearly Inseparable")
+plt.legend()
+
+# centers
+mu1 = np.array([0, 1])
+mu2 = np.array([1, 0])
+
+from_1 = [gaussian_rbf(i, mu1) for i in zip(x1, x2)]
+from_2 = [gaussian_rbf(i, mu2) for i in zip(x1, x2)]
+
+A = []
+
+for i, j in zip(from_1, from_2):
+    temp = []
+    temp.append(i)
+    temp.append(j)
+    temp.append(1)
+    A.append(temp)
+    
+A = np.array(A)
+W = np.linalg.inv(A.T.dot(A)).dot(A.T).dot(ys)
+print(np.round(A.dot(W)))
+print(ys)
+print("Weights:",W)
+
+plt.figure(figsize=(13, 5))
+plt.subplot(1, 2, 2)
+plt.scatter(from_1[0], from_2[0], label="Class_0")
+plt.scatter(from_1[1], from_2[1], label="Class_1")
+plt.scatter(from_1[2], from_2[2], label="Class_1")
+plt.scatter(from_1[3], from_2[3], label="Class_0")
+plt.plot([0, 0.95], [0.95, 0])
+plt.annotate("Seperating hyperplane", xy=(0.5, 0.5), xytext=(0.5, 0.5))
+plt.xlabel("µ1")
+plt.ylabel("µ2")
+plt.title("Transformed Inputs")
+plt.legend()
+
+print(f"Input:{np.array([0, 0])}, Predicted: {predict_matrix(np.array([0, 0]), W)}")
+print(f"Input:{np.array([0, 1])}, Predicted: {predict_matrix(np.array([0, 1]), W)}")
+print(f"Input:{np.array([1, 0])}, Predicted: {predict_matrix(np.array([1, 0]), W)}")
+print(f"Input:{np.array([1, 1])}, Predicted: {predict_matrix(np.array([1, 1]), W)}")
+```
 
 
 ## OUTPUT :
-    /**PLOTS of Output in hidden space**/
-    /Classification results
+### Predictions
+<img width="308" alt="image" src="https://github.com/Shavedha/Experiment-5-Implementation-of-XOR-using-RBF/assets/93427376/ff9c567a-6922-4c61-b9c9-5f3b4ffa7f22">
+
+### Linearly separable data
+<img width="429" alt="image" src="https://github.com/Shavedha/Experiment-5-Implementation-of-XOR-using-RBF/assets/93427376/439f3317-48df-4b56-a4b7-79fc1574d83c">
+
+### Transformed Inputs
+<img width="454" alt="image" src="https://github.com/Shavedha/Experiment-5-Implementation-of-XOR-using-RBF/assets/93427376/b87b1d6f-91fb-498c-b929-b0467f60524d">
+
 
 ## RESULT:
-
+Thus XOR is implemeted using RBF successfully.
 
 
 
